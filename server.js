@@ -2,20 +2,22 @@ const http = require('http');
 const url = require('url');
 http.createServer(function (req, res) {
 
+
     if (req.url === '/') {
-        res.write('Ahora te encuentras en el Home "/"');
+
+        res.write(JSON.stringify({ TITULO: 'VISTA PRINCIPAL' }));
         return res.end();
     }
     if (req.url === '/hello') {
-        res.write('Ahora te encuentras en la ruta de hello');
+        res.write(JSON.stringify({ TITULO: 'VISTA INTERMEDIA' }));
         return res.end();
     }
-    if (req.url === '/hello/:nombre') {
-        let email = req.params.nombre;
-        console.log(email)
-        res.write('Ahora te encuentras en la ruta de hello');
+    if (url.parse(req.url).pathname.split('/').length === 3) {
+
+
+        res.write(JSON.stringify({ "Hello": url.parse(req.url).pathname.split('/')[2] }));
         return res.end();
     }
-    res.write('Mensaje generico cuando la ruta no se encuentra especificada');
+    res.write(JSON.stringify({ ERROR: 'La ruta no se encuentra' }));
     return res.end();
 }).listen(8080);
